@@ -1,0 +1,543 @@
+<title>The Momentum Signal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=IBM+Plex+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+  :root {
+    --bg: #F7F5F2;
+    --surface: #FFFFFF;
+    --surface-sunk: #F0EDE8;
+    --ink: #201C22;
+    --ink-soft: #4A4550;
+    --muted: #726C78;
+    --border: #E4E0DB;
+    --border-strong: #D2CCC4;
+
+    --carbon: #C4633B;
+    --carbon-soft: #E9D4C6;
+    --bricks: #3E7488;
+    --bricks-soft: #CFDEE3;
+    --moneygene: #8A5FA8;
+    --moneygene-soft: #E1D3EA;
+    --dm: #B69A3E;
+
+    --font-display: "Fraunces", Georgia, "Times New Roman", serif;
+    --font-body: "IBM Plex Sans", -apple-system, "Segoe UI", sans-serif;
+    --font-mono: "IBM Plex Mono", "Courier New", monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #15131A;
+      --surface: #1E1B24;
+      --surface-sunk: #19161F;
+      --ink: #F1EDE8;
+      --ink-soft: #C9C2CE;
+      --muted: #9891A0;
+      --border: #322C3A;
+      --border-strong: #423A4A;
+
+      --carbon: #E08256;
+      --carbon-soft: #4A362A;
+      --bricks: #6BA4B8;
+      --bricks-soft: #253B41;
+      --moneygene: #B48ED0;
+      --moneygene-soft: #382B45;
+      --dm: #D4B96A;
+    }
+  }
+  :root[data-theme="dark"] {
+    --bg: #15131A;
+    --surface: #1E1B24;
+    --surface-sunk: #19161F;
+    --ink: #F1EDE8;
+    --ink-soft: #C9C2CE;
+    --muted: #9891A0;
+    --border: #322C3A;
+    --border-strong: #423A4A;
+
+    --carbon: #E08256;
+    --carbon-soft: #4A362A;
+    --bricks: #6BA4B8;
+    --bricks-soft: #253B41;
+    --moneygene: #B48ED0;
+    --moneygene-soft: #382B45;
+    --dm: #D4B96A;
+  }
+
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    line-height: 1.5;
+  }
+  .page {
+    max-width: 920px;
+    margin: 0 auto;
+    padding: 56px 24px 96px;
+  }
+
+  h1, h2, h3 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; margin: 0; color: var(--ink); }
+  .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 14px;
+  }
+  h1 { font-size: clamp(32px, 5vw, 46px); line-height: 1.1; letter-spacing: -0.01em; }
+  h2 { font-size: 24px; line-height: 1.25; }
+  h3 { font-size: 16px; font-weight: 600; }
+  p { margin: 0; color: var(--ink-soft); }
+  .lede {
+    font-size: 18px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+    max-width: 62ch;
+    margin-top: 18px;
+  }
+  strong { color: var(--ink); font-weight: 600; }
+  .num { font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+
+  header.hero { padding-bottom: 40px; border-bottom: 1px solid var(--border); }
+
+  section { padding: 48px 0; border-bottom: 1px solid var(--border); }
+  section:last-of-type { border-bottom: none; }
+
+  /* stat band */
+  .stats {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1px;
+    background: var(--border);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    overflow: hidden;
+  }
+  .stat {
+    background: var(--surface);
+    padding: 22px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .stat .figure {
+    font-family: var(--font-mono);
+    font-size: 30px;
+    font-weight: 600;
+    font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .stat .label { font-size: 13px; color: var(--muted); line-height: 1.4; }
+  @media (max-width: 720px) { .stats { grid-template-columns: 1fr; } }
+
+  /* chart card */
+  .chart-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 24px 16px;
+  }
+  .chart-head { display: flex; justify-content: space-between; align-items: baseline; gap: 16px; flex-wrap: wrap; margin-bottom: 4px; }
+  .chart-head h3 { margin: 0; }
+  .chart-sub { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .legend { display: flex; gap: 16px; flex-wrap: wrap; font-family: var(--font-mono); font-size: 12px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .swatch { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .chart-svg-wrap { overflow-x: auto; }
+  svg.chart { display: block; width: 100%; height: auto; }
+  .axis-label { font-family: var(--font-mono); font-size: 10.5px; fill: var(--muted); }
+  .gridline { stroke: var(--border); stroke-width: 1; }
+  .series-line { fill: none; stroke-width: 2.25; }
+  .series-dot { stroke: var(--surface); stroke-width: 1.5; }
+  .release-tick { stroke-dasharray: 2 3; stroke-width: 1.25; }
+  .dm-band { fill: var(--dm); opacity: 0.08; }
+  .dm-line { stroke: var(--dm); stroke-width: 1.5; stroke-dasharray: 4 3; fill: none; }
+
+  /* mechanism section */
+  .mech-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; margin-top: 28px; }
+  @media (max-width: 720px) { .mech-grid { grid-template-columns: 1fr; } }
+  .mech-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 22px;
+  }
+  .mech-card .tag {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    padding: 3px 8px;
+    border-radius: 5px;
+    display: inline-block;
+    margin-bottom: 12px;
+  }
+  .tag.compound { background: var(--carbon-soft); color: var(--carbon); }
+  .tag.decay { background: var(--bricks-soft); color: var(--bricks); }
+  .mech-card p { margin-top: 10px; font-size: 14.5px; }
+  .mech-card .metric-row { display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 13px; margin-top: 14px; padding-top: 12px; border-top: 1px solid var(--border); color: var(--muted); }
+  .mech-card .metric-row b { color: var(--ink); font-weight: 600; }
+
+  /* table */
+  .table-wrap { overflow-x: auto; border: 1px solid var(--border); border-radius: 12px; }
+  table { border-collapse: collapse; width: 100%; min-width: 760px; font-family: var(--font-mono); font-size: 12.5px; }
+  thead th {
+    text-align: right;
+    font-weight: 500;
+    color: var(--muted);
+    background: var(--surface-sunk);
+    padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    white-space: nowrap;
+    position: sticky; top: 0;
+  }
+  thead th:first-child, tbody td:first-child { text-align: left; }
+  tbody td { text-align: right; padding: 8px 14px; border-bottom: 1px solid var(--border); font-variant-numeric: tabular-nums; }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr.group-start td { border-top: 1px solid var(--border-strong); }
+  td.track-name { font-family: var(--font-body); font-weight: 600; }
+  td.dim { color: var(--muted); }
+
+  /* playbook */
+  .playbook { display: flex; flex-direction: column; gap: 14px; margin-top: 24px; }
+  .rule {
+    display: grid;
+    grid-template-columns: 28px 1fr;
+    gap: 14px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 18px 20px;
+  }
+  .rule .n { font-family: var(--font-mono); color: var(--muted); font-size: 13px; padding-top: 2px; }
+  .rule h4 { margin: 0 0 4px; font-family: var(--font-body); font-size: 15px; font-weight: 600; color: var(--ink); }
+  .rule p { font-size: 14px; }
+
+  .caveat {
+    font-size: 13.5px;
+    color: var(--muted);
+    background: var(--surface-sunk);
+    border-radius: 10px;
+    padding: 16px 20px;
+    margin-top: 20px;
+  }
+  .caveat b { color: var(--ink-soft); }
+
+  footer { padding-top: 40px; font-size: 12.5px; color: var(--muted); font-family: var(--font-mono); }
+</style>
+
+<div class="page">
+
+  <header class="hero">
+    <p class="eyebrow">NST · sauvachi — momentum analysis · Sep 4, 2026</p>
+    <h1>Discovery Mode doesn't create momentum. It multiplies whatever's already there.</h1>
+    <p class="lede">Twelve months of monthly data on CARBON, 4&nbsp;BRICKS&nbsp;DOWN, and money&nbsp;gene — pulled fresh from Spotify for Artists rather than the single 28-day snapshot the last deck was built on. The pattern that falls out reframes what actually needs to be true for Halos in its first ten weeks.</p>
+  </header>
+
+  <section id="stats">
+    <div class="stats">
+      <div class="stat">
+        <div class="figure num">63–69%</div>
+        <div class="label">of CARBON's and 4&nbsp;BRICKS&nbsp;DOWN's <em>August 2026</em> streams — more than a year post-release for one of them — still came through Discovery Mode contexts specifically. This isn't an early boost. It's the current main channel.</div>
+      </div>
+      <div class="stat">
+        <div class="figure num">Month 3</div>
+        <div class="label">is where CARBON and 4&nbsp;BRICKS&nbsp;DOWN's trajectories split. Same label, same era, same Discovery Mode access — one kept compounding, one didn't.</div>
+      </div>
+      <div class="stat">
+        <div class="figure num">4,245 → 1,865</div>
+        <div class="label">CARBON's saves-per-listener ratio (basis points, ×100), Dec 2025 → Jul 2026. It fell the entire time streams and absolute saves were still climbing — dilution, not decline.</div>
+      </div>
+    </div>
+  </section>
+
+  <section id="chart-saves">
+    <p class="eyebrow">Chart 1 — the divergence</p>
+    <h2>Absolute monthly saves, three tracks, one calendar</h2>
+    <p class="lede" style="font-size:15.5px; margin-top:10px;">Not the ratio — the raw count. This is what a listener base actually did each month, independent of how much the algorithm chose to show the song to.</p>
+    <div class="chart-card" style="margin-top:24px;">
+      <div class="chart-head">
+        <div class="chart-sub">Sep 2025 – Aug 2026 · dashed verticals mark each track's release date</div>
+        <div class="legend">
+          <span><i class="swatch" style="background:var(--carbon)"></i>CARBON</span>
+          <span><i class="swatch" style="background:var(--bricks)"></i>4 BRICKS DOWN</span>
+          <span><i class="swatch" style="background:var(--moneygene)"></i>money gene</span>
+        </div>
+      </div>
+      <div class="chart-svg-wrap"><svg id="chartSaves" class="chart" viewBox="0 0 880 340"></svg></div>
+    </div>
+  </section>
+
+  <section id="chart-ratio">
+    <p class="eyebrow">Chart 2 — the dilution mechanic</p>
+    <h2>Saves per listener, against Discovery Mode's own portfolio growth</h2>
+    <p class="lede" style="font-size:15.5px; margin-top:10px;">The gold dashed line is how many sauvachi songs were enrolled in Discovery Mode that month (7 → 12 → 17 → 20). As enrollment scales, both tracks' ratios keep falling — because DM's job is reach, and reach means more casual listeners per fan.</p>
+    <div class="chart-card" style="margin-top:24px;">
+      <div class="chart-head">
+        <div class="chart-sub">Saves ÷ listeners, %, same 12 months</div>
+        <div class="legend">
+          <span><i class="swatch" style="background:var(--carbon)"></i>CARBON</span>
+          <span><i class="swatch" style="background:var(--bricks)"></i>4 BRICKS DOWN</span>
+          <span><i class="swatch" style="background:var(--dm)"></i>DM songs enrolled (sauvachi, portfolio-wide)</span>
+        </div>
+      </div>
+      <div class="chart-svg-wrap"><svg id="chartRatio" class="chart" viewBox="0 0 880 340"></svg></div>
+    </div>
+  </section>
+
+  <section id="mechanism">
+    <p class="eyebrow">What the two charts mean together</p>
+    <h2>The same label, the same access, two opposite outcomes</h2>
+    <p class="lede" style="font-size:15.5px; margin-top:10px;">CARBON and 4 BRICKS DOWN are both sauvachi/NST joint releases, roughly a month apart in age, both carrying huge Discovery-Mode-driven historical lift numbers (+9,052% and +184% respectively, per the campaign dashboard). If DM enrollment alone explained momentum, they'd track together. They don't.</p>
+    <div class="mech-grid">
+      <div class="mech-card">
+        <span class="tag compound">Compounding</span>
+        <h3>CARBON</h3>
+        <p>Saves dipped once (May '26, −17%) and rebounded every month after. Absolute saves are higher in August ('26) than in any prior month — even as the per-listener ratio nearly halved, because the audience getting the song more than tripled over the same stretch.</p>
+        <div class="metric-row"><span>Saves, first vs. last full month</span><b>81 → 1,275</b></div>
+        <div class="metric-row"><span>Aug '26 share of streams via DM</span><b>63.4%</b></div>
+      </div>
+      <div class="mech-card">
+        <span class="tag decay">Decaying</span>
+        <h3>4 BRICKS DOWN</h3>
+        <p>Saves peaked in month 2 (Nov '25, 1,099) and fell in nine of the next ten months. DM kept the stream count from collapsing outright — August is still 68.5% Discovery-Mode-sourced — but it's multiplying a shrinking base, not a growing one.</p>
+        <div class="metric-row"><span>Saves, peak vs. Aug '26</span><b>1,099 → 321</b></div>
+        <div class="metric-row"><span>Aug '26 share of streams via DM</span><b>68.5%</b></div>
+      </div>
+    </div>
+    <p class="lede" style="font-size:15.5px; margin-top:24px;">The mechanism this implies: <strong>Discovery Mode amplifies the save momentum a track already has walking in — it doesn't manufacture momentum a track doesn't have.</strong> CARBON's saves were still accelerating in the months before DM enrollment expanded portfolio-wide (Jan–Mar '26); 4 BRICKS DOWN's saves had already started falling before that same expansion. Same lever, opposite starting conditions, opposite results.</p>
+  </section>
+
+  <section id="table">
+    <p class="eyebrow">Full monthly series</p>
+    <h2>The numbers behind both charts</h2>
+    <div class="table-wrap" style="margin-top:20px;">
+      <table id="dataTable"></table>
+    </div>
+  </section>
+
+  <section id="playbook">
+    <p class="eyebrow">What this means for Halos</p>
+    <h2>A month-3 test, not a week-1 verdict</h2>
+    <div class="playbook">
+      <div class="rule">
+        <div class="n">01</div>
+        <div><h4>Ignore the week-1 saves/listener ratio — it's structurally suppressed</h4><p>CARBON's own release-window ratio (0.33%) was the <em>lowest</em> of its entire first year, well below every later month. The first algorithmic push floods in low-intent listeners before the song settles to its real audience. Don't read early softness as a bad sign on its own.</p></div>
+      </div>
+      <div class="rule">
+        <div class="n">02</div>
+        <div><h4>Track absolute monthly saves for months 1–4. One dip is normal — two isn't</h4><p>Every track here dipped once (CARBON: month 5, −17%; money gene: month 2, −61%) and rebounded. 4 BRICKS DOWN dipped in month 3 and never recovered. If Halos's saves are still falling by the start of month 4, treat it as a one-and-done track rather than waiting on Discovery Mode to fix it.</p></div>
+      </div>
+      <div class="rule">
+        <div class="n">03</div>
+        <div><h4>Get NST's distributor to flip on DM access before that month-3 test resolves</h4><p>If Halos passes the rebound test, the payoff only lands if DM enrollment can start immediately — not after another 2–4 week approval cycle. Enrollment decisions run 2–4 weeks ahead of each monthly campaign (the August cohort was locked Jul 11), so this needs to be in motion now, independent of how Halos performs.</p></div>
+      </div>
+      <div class="rule">
+        <div class="n">04</div>
+        <div><h4>Budget for a ceiling, not just a floor, once enrolled</h4><p>63–69% of even a year-old proven track's monthly volume is now DM-sourced. That's not a temporary lift to bank once and move on from — it's the channel Halos will depend on for the majority of its long-run reach, the same way CARBON still does eleven months later.</p></div>
+      </div>
+    </div>
+    <div class="caveat"><b>Read this as directional, not statistical.</b> Three tracks, two with a full year of history — enough to see a real, mechanistically coherent pattern, not enough to treat the month-3 threshold as a law. Re-run this exact monthly pull after Halos's first four months and the sample doubles.</div>
+  </section>
+
+  <footer>Source: Spotify for Artists, live monthly custom-range pulls, Sep 4 2026 · artist.tools (DM commission &amp; enrollment context) · Prior deliverable: nst-data-strategy-deck.pptx (28-day snapshot only, no month-over-month series)</footer>
+
+</div>
+
+<script>
+(function () {
+  var months = ["Sep","Oct","Nov","Dec","Jan","Feb","Mar","Apr","May","Jun","Jul","Aug"];
+  var monthFull = ["Sep '25","Oct '25","Nov '25","Dec '25","Jan '26","Feb '26","Mar '26","Apr '26","May '26","Jun '26","Jul '26","Aug '26"];
+
+  var carbon = {
+    streams:   [14045,2672,2662,3100,8736,15734,45757,69716,68376,79039,103257,114527],
+    listeners: [11969,1795,1683,1908,5264,9202,24930,37291,34579,44658,57931,64280],
+    saves:     [40,70,63,81,191,276,732,1141,946,1029,1080,1275],
+    adds:      [47,38,20,58,126,210,612,868,789,792,949,888],
+    color: "var(--carbon)", releaseMonthIdx: -0.55 // Aug 14 '25, just before series start
+  };
+  var bricks = {
+    streams:   [13727,35497,66308,67992,68856,54668,57912,48602,44479,35094,33766,37087],
+    listeners: [6526,16017,33166,34807,34451,28044,29091,26045,24261,21247,21172,23314],
+    saves:     [522,800,1099,835,812,525,568,430,369,276,230,321],
+    adds:      [256,553,856,869,827,691,646,531,443,338,336,450],
+    color: "var(--bricks)", releaseMonthIdx: 0.6 // Sep 18 '25
+  };
+  var moneygene = {
+    streams:   [null,null,null,null,null,null,null,null,45831,27631,56516,110403],
+    listeners: [null,null,null,null,null,null,null,null,26132,17579,34987,70026],
+    saves:     [null,null,null,null,null,null,null,null,759,297,549,1114],
+    adds:      [null,null,null,null,null,null,null,null,775,344,474,978],
+    color: "var(--moneygene)", releaseMonthIdx: 8 // May 1 '26
+  };
+  var dmEnrolled = [null,null,null,null,null,null,null,7,7,12,17,17]; // Apr'26..Aug'26 known
+
+  function ratio(t){
+    return t.saves.map(function(s,i){
+      var l = t.listeners[i];
+      if (s==null || l==null) return null;
+      return (s/l)*100;
+    });
+  }
+  carbon.ratio = ratio(carbon);
+  bricks.ratio = ratio(bricks);
+  moneygene.ratio = ratio(moneygene);
+
+  var SVGNS = "http://www.w3.org/2000/svg";
+  function el(tag, attrs){
+    var e = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  function drawChart(svgId, series, opts){
+    var svg = document.getElementById(svgId);
+    var W = 880, H = 340;
+    var padL = 46, padR = 18, padT = 18, padB = 34;
+    var plotW = W - padL - padR, plotH = H - padT - padB;
+    var n = 12;
+    var xStep = plotW / (n - 1);
+
+    var allVals = [];
+    series.forEach(function(s){ s.data.forEach(function(v){ if (v!=null) allVals.push(v); }); });
+    if (opts.extraMax) allVals.push(opts.extraMax);
+    var maxV = Math.max.apply(null, allVals);
+    var niceMax = opts.niceMax ? opts.niceMax(maxV) : maxV * 1.12;
+
+    function x(i){ return padL + i * xStep; }
+    function y(v){ return padT + plotH - (v / niceMax) * plotH; }
+
+    // gridlines + y labels
+    var gridCount = opts.gridCount || 5;
+    for (var g = 0; g <= gridCount; g++){
+      var val = (niceMax / gridCount) * g;
+      var gy = y(val);
+      svg.appendChild(el("line", {x1:padL, x2:W-padR, y1:gy, y2:gy, class:"gridline"}));
+      var lbl = el("text", {x: padL - 8, y: gy + 4, class:"axis-label", "text-anchor":"end"});
+      lbl.textContent = opts.yFmt ? opts.yFmt(val) : Math.round(val);
+      svg.appendChild(lbl);
+    }
+
+    // x labels
+    for (var i = 0; i < n; i++){
+      var lbl2 = el("text", {x: x(i), y: H - 10, class:"axis-label", "text-anchor":"middle"});
+      lbl2.textContent = months[i];
+      svg.appendChild(lbl2);
+    }
+
+    // DM enrollment overlay (secondary, own scale) — only for ratio chart
+    if (opts.dm){
+      var dmVals = opts.dm.filter(function(v){return v!=null;});
+      var dmMax = Math.max.apply(null, dmVals) * 1.25;
+      function dmY(v){ return padT + plotH - (v/dmMax) * plotH; }
+      var dmPts = [];
+      for (var di=0; di<n; di++){ if (opts.dm[di]!=null) dmPts.push([di, opts.dm[di]]); }
+      var dmPath = "";
+      dmPts.forEach(function(p, idx){
+        dmPath += (idx===0 ? "M" : "L") + x(p[0]) + "," + dmY(p[1]) + " ";
+      });
+      svg.appendChild(el("path", {d: dmPath, class:"dm-line"}));
+      dmPts.forEach(function(p){
+        svg.appendChild(el("circle", {cx:x(p[0]), cy:dmY(p[1]), r:3, fill:"var(--dm)"}));
+        var t = el("text", {x:x(p[0]), y:dmY(p[1])-8, class:"axis-label", "text-anchor":"middle", fill:"var(--dm)"});
+        t.textContent = p[1];
+        svg.appendChild(t);
+      });
+    }
+
+    // release markers
+    series.forEach(function(s){
+      if (s.releaseMonthIdx == null) return;
+      var rx = x(s.releaseMonthIdx);
+      if (rx < padL || rx > W - padR) return;
+      svg.appendChild(el("line", {x1:rx, x2:rx, y1:padT, y2:padT+plotH, stroke:s.color, class:"release-tick", opacity:0.55}));
+    });
+
+    // series lines
+    series.forEach(function(s){
+      var pts = [];
+      for (var i=0;i<n;i++){ if (s.data[i]!=null) pts.push([i, s.data[i]]); }
+      var path = "";
+      var segStart = true;
+      for (var j=0;j<n;j++){
+        if (s.data[j]==null){ segStart = true; continue; }
+        path += (segStart ? "M" : "L") + x(j) + "," + y(s.data[j]) + " ";
+        segStart = false;
+      }
+      svg.appendChild(el("path", {d:path, stroke:s.color, class:"series-line"}));
+      pts.forEach(function(p){
+        svg.appendChild(el("circle", {cx:x(p[0]), cy:y(p[1]), r:3.5, fill:s.color, class:"series-dot"}));
+      });
+      // endpoint label
+      if (pts.length){
+        var last = pts[pts.length-1];
+        var t = el("text", {x:x(last[0])+ (x(last[0])>W-100?-8:8), y:y(last[1])+4, class:"axis-label", "text-anchor": (x(last[0])>W-100? "end":"start"), fill:s.color, "font-weight":600});
+        t.textContent = opts.endFmt ? opts.endFmt(last[1]) : last[1];
+        svg.appendChild(t);
+      }
+    });
+  }
+
+  drawChart("chartSaves", [
+    {data: carbon.saves, color: "var(--carbon)", releaseMonthIdx: carbon.releaseMonthIdx},
+    {data: bricks.saves, color: "var(--bricks)", releaseMonthIdx: bricks.releaseMonthIdx},
+    {data: moneygene.saves, color: "var(--moneygene)", releaseMonthIdx: moneygene.releaseMonthIdx}
+  ], { gridCount: 4, yFmt: function(v){ return v>=1000? (v/1000).toFixed(1)+"k": Math.round(v); }, endFmt: function(v){return v.toLocaleString();} });
+
+  drawChart("chartRatio", [
+    {data: carbon.ratio, color: "var(--carbon)", releaseMonthIdx: carbon.releaseMonthIdx},
+    {data: bricks.ratio, color: "var(--bricks)", releaseMonthIdx: bricks.releaseMonthIdx}
+  ], { gridCount: 4, dm: dmEnrolled, yFmt: function(v){ return v.toFixed(1)+"%"; }, endFmt: function(v){return v.toFixed(2)+"%";} });
+
+  // data table
+  function fmt(v){ return v==null ? "—" : v.toLocaleString(); }
+  function fmtPct(v){ return v==null ? "—" : v.toFixed(2)+"%"; }
+  var rows = [];
+  rows.push(["thead"]);
+  function trackRows(name, t, releaseLabel){
+    rows.push(["group", name, releaseLabel]);
+    for (var i=0;i<12;i++){
+      if (t.streams[i]==null) continue;
+      rows.push(["data", monthFull[i], fmt(t.streams[i]), fmt(t.listeners[i]), fmt(t.saves[i]), fmt(t.adds[i]), fmtPct(t.ratio[i])]);
+    }
+  }
+  trackRows("CARBON", carbon, "released Aug 14, 2025");
+  trackRows("4 BRICKS DOWN", bricks, "released Sep 18, 2025");
+  trackRows("money gene", moneygene, "released May 1, 2026");
+
+  var table = document.getElementById("dataTable");
+  var thead = document.createElement("thead");
+  thead.innerHTML = "<tr><th>Month</th><th>Streams</th><th>Listeners</th><th>Saves</th><th>Playlist adds</th><th>Saves / listener</th></tr>";
+  table.appendChild(thead);
+  var tbody = document.createElement("tbody");
+  rows.forEach(function(r){
+    if (r[0]==="thead") return;
+    if (r[0]==="group"){
+      var tr = document.createElement("tr");
+      tr.className = "group-start";
+      var td = document.createElement("td");
+      td.className = "track-name";
+      td.colSpan = 6;
+      td.textContent = r[1] + "  ·  " + r[2];
+      tr.appendChild(td);
+      tbody.appendChild(tr);
+      return;
+    }
+    var tr2 = document.createElement("tr");
+    var cells = [r[1], r[2], r[3], r[4], r[5], r[6]];
+    cells.forEach(function(c, idx){
+      var td = document.createElement("td");
+      if (idx===0) td.className = "dim";
+      td.textContent = c;
+      tr2.appendChild(td);
+    });
+    tbody.appendChild(tr2);
+  });
+  table.appendChild(tbody);
+})();
+</script>

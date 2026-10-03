@@ -77,3 +77,13 @@ Model: cumulative = 262 (at Oct 1, day 7) + exponential-decay daily rate toward 
 - Does NST own 100% of Halos? Any distributor/label split?
 - Fresher S4A numbers (suggest pulls ~Oct 10 and ~Oct 17) to re-fit the decay.
 - Wants a one-page chart or spreadsheet of the scenarios?
+
+## Stored data (under `halos-projection/data/`)
+- `nst-s4a/` — S4A pulls: per-track detail, songs, playlists, countries, cities, release engagement (2026-09-28), 12-month monthly data, weekly log, audience timeline, DM/Radio notes, momentum analysis.
+- `royalties/` — distributor royalty analysis (README with per-stream rate findings), NST monthly history + projection CSVs.
+- `album-projection/` — album model rev 5 (README, Discovery Mode rules and campaign data, artist.tools extract, `model_rev2.py`, CSV).
+- `playlisting/` — playlisting strategy, tracker.csv, Groover pitches for Halos.
+- `screenshots/` — the 5 screenshots from 2026-10-03 (1 artist.tools header, 2 S4A daily streams, 3 source split, 4 Showcase conversion, 5 Showcase delivery). Order matches upload order.
+- `nst-release-catalog.md` — ISRCs and release dates.
+- `halos-showcase-2026-10-03.csv` (one level up) — Showcase campaign export.
+Not stored: media (mp4/cover art), decks/pptx, sauvachi-only per-track files, the original zip.
