@@ -13,7 +13,7 @@ import sys
 from pathlib import Path
 
 from .adapters.mock_fifa import MockFifa
-from .adapters.mock_fm import MockFootballManager
+from .adapters.mock_fm import MockFootballManager, SimulatedCrash
 from .bridge.config import BridgeConfig
 from .bridge.orchestrator import MatchOrchestrator
 from .contracts.jsonschema import write_all
@@ -35,10 +35,19 @@ def _cmd_demo(args: argparse.Namespace) -> int:
         if rec is None:
             print("no upcoming fixture")
             break
-        out = orch.run(rec.match_id)
-        print(json.dumps({"match_id": out.match_id, "state": out.state.value, "score": out.score,
-                          "integration": out.integration_level.name if out.integration_level else None,
-                          "message": out.message}))
+        try:
+            outs = [orch.run(rec.match_id)]
+        except SimulatedCrash as crash:
+            # Imitate a bridge restart: fresh orchestrator, same database, same (mock) game state.
+            print(f"simulated bridge crash: {crash}; restarting and recovering")
+            orch = MatchOrchestrator(db, fm, fifa, config=orch.config)
+            outs = orch.recover_all()
+        for out in outs:
+            print(json.dumps({"match_id": out.match_id, "state": out.state.value, "score": out.score,
+                              "integration": out.integration_level.name if out.integration_level else None,
+                              "message": out.message}))
+    print("FM applied each fixture exactly once:",
+          all(f.import_count <= 1 for f in fm.fixtures))
     print("league table:", json.dumps(fm.table))
     return 0
 
