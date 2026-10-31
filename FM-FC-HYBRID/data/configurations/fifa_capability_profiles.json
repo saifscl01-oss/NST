@@ -1,49 +1,777 @@
 {
-  "_status": "PROVISIONAL. Knob names are bridge-internal, version-neutral names. Ranges/values are INFERRED from general knowledge of FIFA 20-22 custom tactics and must be confirmed against the chosen version (docs/FIFA_RESEARCH.md, docs/TACTICAL_MAPPING.md). The FIFA adapter owns the translation from these knobs to real game fields.",
+  "_status": "PROVISIONAL. Knob names are bridge-internal. Integer knobs are expressed by rules on a 1..10 bridge scale and converted linearly to the game range (game_min..game_max). Field existence/ranges are SOURCE VERIFIED per docs/FIFA_RESEARCH.md section 5.4; enum label order and player-instruction bit layout are UNKNOWN until experiment E2. The FIFA adapter owns the label->value mapping.",
   "profiles": {
-    "fifa-custom-tactics-v1-provisional": {
-      "applies_to": ["FIFA20", "FIFA21", "FIFA22"],
-      "evidence": "INFERRED",
+    "fifa22-provisional": {
+      "applies_to": [
+        "FIFA22"
+      ],
+      "evidence": "FIFA_RESEARCH.md 5.4 (FIFA 22 CT consts.lua)",
       "team": {
-        "game_plan": {"type": "enum", "values": ["ultra_defensive", "defensive", "balanced", "attacking", "ultra_attacking"]},
-        "defensive_style": {"type": "enum", "values": ["balanced", "pressure_on_heavy_touch", "press_after_possession_loss", "constant_pressure", "drop_back"]},
-        "defensive_width": {"type": "int", "min": 1, "max": 10, "default": 5},
-        "depth": {"type": "int", "min": 1, "max": 10, "default": 5},
-        "build_up_play": {"type": "enum", "values": ["balanced", "slow_build_up", "long_ball", "fast_build_up"]},
-        "chance_creation": {"type": "enum", "values": ["balanced", "possession", "direct_passing", "forward_runs"]},
-        "offensive_width": {"type": "int", "min": 1, "max": 10, "default": 5},
-        "players_in_box": {"type": "int", "min": 1, "max": 10, "default": 5},
-        "corners": {"type": "int", "min": 1, "max": 5, "default": 2},
-        "free_kicks": {"type": "int", "min": 1, "max": 5, "default": 2}
+        "game_plan": {
+          "type": "enum",
+          "values": [
+            "ultra_defensive",
+            "defensive",
+            "balanced",
+            "attacking",
+            "ultra_attacking"
+          ],
+          "evidence": "DOCUMENTED: up to 5 mentalities per team (default_mentalities), 1=Ultra Defensive..5=Ultra Attacking"
+        },
+        "defensive_style": {
+          "type": "enum",
+          "values": [
+            "balanced",
+            "pressure_on_heavy_touch",
+            "press_after_possession_loss",
+            "constant_pressure",
+            "drop_back"
+          ],
+          "evidence": "SOURCE VERIFIED field defensivestyle 0..4; value-to-label order UNKNOWN (experiment E2)"
+        },
+        "defensive_width": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 5,
+          "game_min": 1,
+          "game_max": 100
+        },
+        "depth": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 5,
+          "game_min": 1,
+          "game_max": 100
+        },
+        "build_up_play": {
+          "type": "enum",
+          "values": [
+            "balanced",
+            "slow_build_up",
+            "long_ball",
+            "fast_build_up"
+          ],
+          "evidence": "SOURCE VERIFIED field buildupplay 0..3; label order UNKNOWN"
+        },
+        "chance_creation": {
+          "type": "enum",
+          "values": [
+            "balanced",
+            "possession",
+            "direct_passing",
+            "forward_runs"
+          ],
+          "evidence": "SOURCE VERIFIED field chancecreation 0..3; label order UNKNOWN"
+        },
+        "offensive_width": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 5,
+          "game_min": 1,
+          "game_max": 100
+        },
+        "players_in_box": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 5,
+          "game_min": 0,
+          "game_max": 9
+        },
+        "corners": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 3,
+          "game_min": 0,
+          "game_max": 4
+        },
+        "free_kicks": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 3,
+          "game_min": 0,
+          "game_max": 4
+        }
       },
       "player_instructions": {
-        "attacking_runs": {"type": "enum", "values": ["stay_back_while_attacking", "balanced_attack", "get_forward"]},
-        "defensive_support": {"type": "enum", "values": ["stay_forward", "basic_defensive_support", "come_back_on_defence"]},
-        "positioning_freedom": {"type": "enum", "values": ["stick_to_position", "free_roam"]},
-        "forward_runs": {"type": "enum", "values": ["get_in_behind", "mixed_attack", "come_short"]},
-        "width_preference": {"type": "enum", "values": ["stay_central", "drift_wide", "stay_wide"]},
-        "interceptions": {"type": "enum", "values": ["aggressive", "normal", "conservative"]},
-        "marking": {"type": "enum", "values": ["cut_passing_lanes", "basic", "man_mark"]},
-        "cover": {"type": "enum", "values": ["cover_center", "cover_wing"]},
-        "support_runs": {"type": "enum", "values": ["get_into_box_for_cross", "basic_support", "stay_on_edge_of_box"]},
-        "forward_role": {"type": "enum", "values": ["target_man", "false_9", "basic"]}
+        "attacking_runs": {
+          "type": "enum",
+          "values": [
+            "stay_back_while_attacking",
+            "balanced_attack",
+            "get_forward"
+          ]
+        },
+        "defensive_support": {
+          "type": "enum",
+          "values": [
+            "stay_forward",
+            "basic_defensive_support",
+            "come_back_on_defence"
+          ]
+        },
+        "positioning_freedom": {
+          "type": "enum",
+          "values": [
+            "stick_to_position",
+            "free_roam"
+          ]
+        },
+        "forward_runs": {
+          "type": "enum",
+          "values": [
+            "get_in_behind",
+            "mixed_attack",
+            "come_short"
+          ]
+        },
+        "width_preference": {
+          "type": "enum",
+          "values": [
+            "stay_central",
+            "drift_wide",
+            "stay_wide"
+          ]
+        },
+        "interceptions": {
+          "type": "enum",
+          "values": [
+            "aggressive",
+            "normal",
+            "conservative"
+          ]
+        },
+        "marking": {
+          "type": "enum",
+          "values": [
+            "cut_passing_lanes",
+            "basic",
+            "man_mark"
+          ]
+        },
+        "cover": {
+          "type": "enum",
+          "values": [
+            "cover_center",
+            "cover_wing"
+          ]
+        },
+        "support_runs": {
+          "type": "enum",
+          "values": [
+            "get_into_box_for_cross",
+            "basic_support",
+            "stay_on_edge_of_box"
+          ]
+        },
+        "forward_role": {
+          "type": "enum",
+          "values": [
+            "target_man",
+            "false_9",
+            "basic"
+          ]
+        },
+        "_evidence": "Knob names INFERRED; stored as playerinstructionN_1/_2 bitfields (SOURCE VERIFIED), bit layout UNKNOWN (E2)"
       },
       "formations": {
-        "4-4-2":      ["GK", "RB", "CB", "CB", "LB", "RM", "CM", "CM", "LM", "ST", "ST"],
-        "4-4-2(2)":   ["GK", "RB", "CB", "CB", "LB", "RM", "CDM", "CDM", "LM", "ST", "ST"],
-        "4-3-3":      ["GK", "RB", "CB", "CB", "LB", "CM", "CM", "CM", "RW", "ST", "LW"],
-        "4-3-3(2)":   ["GK", "RB", "CB", "CB", "LB", "CDM", "CM", "CM", "RW", "ST", "LW"],
-        "4-3-3(4)":   ["GK", "RB", "CB", "CB", "LB", "CM", "CM", "CAM", "RW", "ST", "LW"],
-        "4-2-3-1":    ["GK", "RB", "CB", "CB", "LB", "CDM", "CDM", "CAM", "CAM", "CAM", "ST"],
-        "4-2-3-1(2)": ["GK", "RB", "CB", "CB", "LB", "CDM", "CDM", "RM", "CAM", "LM", "ST"],
-        "4-1-4-1":    ["GK", "RB", "CB", "CB", "LB", "CDM", "RM", "CM", "CM", "LM", "ST"],
-        "4-1-2-1-2":  ["GK", "RB", "CB", "CB", "LB", "CDM", "CM", "CM", "CAM", "ST", "ST"],
-        "4-2-2-2":    ["GK", "RB", "CB", "CB", "LB", "CDM", "CDM", "CAM", "CAM", "ST", "ST"],
-        "3-5-2":      ["GK", "CB", "CB", "CB", "CDM", "CDM", "RM", "CAM", "LM", "ST", "ST"],
-        "3-4-3":      ["GK", "CB", "CB", "CB", "RM", "CM", "CM", "LM", "RW", "ST", "LW"],
-        "5-3-2":      ["GK", "RWB", "CB", "CB", "CB", "LWB", "CM", "CM", "CM", "ST", "ST"],
-        "5-4-1":      ["GK", "RWB", "CB", "CB", "CB", "LWB", "RM", "CM", "CM", "LM", "ST"],
-        "5-2-1-2":    ["GK", "RWB", "CB", "CB", "CB", "LWB", "CM", "CM", "CAM", "ST", "ST"]
+        "4-4-2": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "RM",
+          "CM",
+          "CM",
+          "LM",
+          "ST",
+          "ST"
+        ],
+        "4-4-2(2)": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "RM",
+          "CDM",
+          "CDM",
+          "LM",
+          "ST",
+          "ST"
+        ],
+        "4-3-3": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CM",
+          "CM",
+          "CM",
+          "RW",
+          "ST",
+          "LW"
+        ],
+        "4-3-3(2)": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CM",
+          "CM",
+          "RW",
+          "ST",
+          "LW"
+        ],
+        "4-3-3(4)": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CM",
+          "CM",
+          "CAM",
+          "RW",
+          "ST",
+          "LW"
+        ],
+        "4-2-3-1": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CDM",
+          "CAM",
+          "CAM",
+          "CAM",
+          "ST"
+        ],
+        "4-2-3-1(2)": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CDM",
+          "RM",
+          "CAM",
+          "LM",
+          "ST"
+        ],
+        "4-1-4-1": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "RM",
+          "CM",
+          "CM",
+          "LM",
+          "ST"
+        ],
+        "4-1-2-1-2": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CM",
+          "CM",
+          "CAM",
+          "ST",
+          "ST"
+        ],
+        "4-2-2-2": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CDM",
+          "CAM",
+          "CAM",
+          "ST",
+          "ST"
+        ],
+        "3-5-2": [
+          "GK",
+          "CB",
+          "CB",
+          "CB",
+          "CDM",
+          "CDM",
+          "RM",
+          "CAM",
+          "LM",
+          "ST",
+          "ST"
+        ],
+        "3-4-3": [
+          "GK",
+          "CB",
+          "CB",
+          "CB",
+          "RM",
+          "CM",
+          "CM",
+          "LM",
+          "RW",
+          "ST",
+          "LW"
+        ],
+        "5-3-2": [
+          "GK",
+          "RWB",
+          "CB",
+          "CB",
+          "CB",
+          "LWB",
+          "CM",
+          "CM",
+          "CM",
+          "ST",
+          "ST"
+        ],
+        "5-4-1": [
+          "GK",
+          "RWB",
+          "CB",
+          "CB",
+          "CB",
+          "LWB",
+          "RM",
+          "CM",
+          "CM",
+          "LM",
+          "ST"
+        ],
+        "5-2-1-2": [
+          "GK",
+          "RWB",
+          "CB",
+          "CB",
+          "CB",
+          "LWB",
+          "CM",
+          "CM",
+          "CAM",
+          "ST",
+          "ST"
+        ]
+      },
+      "position_neighbours": {
+        "_comment": "Cost (0..1) of placing a player in a neighbouring FIFA slot when no exact slot exists. Unlisted pairs cost 1.",
+        "RW|RM": 0.4,
+        "LW|LM": 0.4,
+        "CAM|CM": 0.5,
+        "CDM|CM": 0.5,
+        "RWB|RB": 0.3,
+        "LWB|LB": 0.3,
+        "RM|RWB": 0.7,
+        "LM|LWB": 0.7,
+        "CAM|ST": 0.8,
+        "RW|ST": 0.8,
+        "LW|ST": 0.8,
+        "CDM|CB": 0.8
+      }
+    },
+    "fifa20-21-provisional": {
+      "applies_to": [
+        "FIFA20",
+        "FIFA21"
+      ],
+      "evidence": "FIFA_RESEARCH.md 5.4 (FIFA 21 db_meta.xml, FIFA 20 CT BitLength)",
+      "team": {
+        "game_plan": {
+          "type": "enum",
+          "values": [
+            "ultra_defensive",
+            "defensive",
+            "balanced",
+            "attacking",
+            "ultra_attacking"
+          ],
+          "evidence": "DOCUMENTED: up to 5 mentalities per team (default_mentalities), 1=Ultra Defensive..5=Ultra Attacking"
+        },
+        "defensive_style": {
+          "type": "enum",
+          "values": [
+            "balanced",
+            "pressure_on_heavy_touch",
+            "press_after_possession_loss",
+            "constant_pressure",
+            "drop_back"
+          ],
+          "evidence": "SOURCE VERIFIED field defensivestyle 0..4; value-to-label order UNKNOWN (experiment E2)"
+        },
+        "defensive_width": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 5,
+          "game_min": 0,
+          "game_max": 9
+        },
+        "depth": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 5,
+          "game_min": 0,
+          "game_max": 9
+        },
+        "offensive_style": {
+          "type": "enum",
+          "values": [
+            "style_0",
+            "style_1",
+            "style_2",
+            "style_3"
+          ],
+          "evidence": "SOURCE VERIFIED field offensivestyle 0..3; meaning UNKNOWN, no rules target it yet"
+        },
+        "offensive_width": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 5,
+          "game_min": 0,
+          "game_max": 9
+        },
+        "players_in_box": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 5,
+          "game_min": 0,
+          "game_max": 9
+        },
+        "corners": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 3,
+          "game_min": 0,
+          "game_max": 4
+        },
+        "free_kicks": {
+          "type": "int",
+          "min": 1,
+          "max": 10,
+          "default": 3,
+          "game_min": 0,
+          "game_max": 4
+        }
+      },
+      "player_instructions": {
+        "attacking_runs": {
+          "type": "enum",
+          "values": [
+            "stay_back_while_attacking",
+            "balanced_attack",
+            "get_forward"
+          ]
+        },
+        "defensive_support": {
+          "type": "enum",
+          "values": [
+            "stay_forward",
+            "basic_defensive_support",
+            "come_back_on_defence"
+          ]
+        },
+        "positioning_freedom": {
+          "type": "enum",
+          "values": [
+            "stick_to_position",
+            "free_roam"
+          ]
+        },
+        "forward_runs": {
+          "type": "enum",
+          "values": [
+            "get_in_behind",
+            "mixed_attack",
+            "come_short"
+          ]
+        },
+        "width_preference": {
+          "type": "enum",
+          "values": [
+            "stay_central",
+            "drift_wide",
+            "stay_wide"
+          ]
+        },
+        "interceptions": {
+          "type": "enum",
+          "values": [
+            "aggressive",
+            "normal",
+            "conservative"
+          ]
+        },
+        "marking": {
+          "type": "enum",
+          "values": [
+            "cut_passing_lanes",
+            "basic",
+            "man_mark"
+          ]
+        },
+        "cover": {
+          "type": "enum",
+          "values": [
+            "cover_center",
+            "cover_wing"
+          ]
+        },
+        "support_runs": {
+          "type": "enum",
+          "values": [
+            "get_into_box_for_cross",
+            "basic_support",
+            "stay_on_edge_of_box"
+          ]
+        },
+        "forward_role": {
+          "type": "enum",
+          "values": [
+            "target_man",
+            "false_9",
+            "basic"
+          ]
+        },
+        "_evidence": "Knob names INFERRED; stored as playerinstructionN_1/_2 bitfields (SOURCE VERIFIED), bit layout UNKNOWN (E2)"
+      },
+      "formations": {
+        "4-4-2": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "RM",
+          "CM",
+          "CM",
+          "LM",
+          "ST",
+          "ST"
+        ],
+        "4-4-2(2)": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "RM",
+          "CDM",
+          "CDM",
+          "LM",
+          "ST",
+          "ST"
+        ],
+        "4-3-3": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CM",
+          "CM",
+          "CM",
+          "RW",
+          "ST",
+          "LW"
+        ],
+        "4-3-3(2)": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CM",
+          "CM",
+          "RW",
+          "ST",
+          "LW"
+        ],
+        "4-3-3(4)": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CM",
+          "CM",
+          "CAM",
+          "RW",
+          "ST",
+          "LW"
+        ],
+        "4-2-3-1": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CDM",
+          "CAM",
+          "CAM",
+          "CAM",
+          "ST"
+        ],
+        "4-2-3-1(2)": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CDM",
+          "RM",
+          "CAM",
+          "LM",
+          "ST"
+        ],
+        "4-1-4-1": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "RM",
+          "CM",
+          "CM",
+          "LM",
+          "ST"
+        ],
+        "4-1-2-1-2": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CM",
+          "CM",
+          "CAM",
+          "ST",
+          "ST"
+        ],
+        "4-2-2-2": [
+          "GK",
+          "RB",
+          "CB",
+          "CB",
+          "LB",
+          "CDM",
+          "CDM",
+          "CAM",
+          "CAM",
+          "ST",
+          "ST"
+        ],
+        "3-5-2": [
+          "GK",
+          "CB",
+          "CB",
+          "CB",
+          "CDM",
+          "CDM",
+          "RM",
+          "CAM",
+          "LM",
+          "ST",
+          "ST"
+        ],
+        "3-4-3": [
+          "GK",
+          "CB",
+          "CB",
+          "CB",
+          "RM",
+          "CM",
+          "CM",
+          "LM",
+          "RW",
+          "ST",
+          "LW"
+        ],
+        "5-3-2": [
+          "GK",
+          "RWB",
+          "CB",
+          "CB",
+          "CB",
+          "LWB",
+          "CM",
+          "CM",
+          "CM",
+          "ST",
+          "ST"
+        ],
+        "5-4-1": [
+          "GK",
+          "RWB",
+          "CB",
+          "CB",
+          "CB",
+          "LWB",
+          "RM",
+          "CM",
+          "CM",
+          "LM",
+          "ST"
+        ],
+        "5-2-1-2": [
+          "GK",
+          "RWB",
+          "CB",
+          "CB",
+          "CB",
+          "LWB",
+          "CM",
+          "CM",
+          "CAM",
+          "ST",
+          "ST"
+        ]
+      },
+      "position_neighbours": {
+        "_comment": "Cost (0..1) of placing a player in a neighbouring FIFA slot when no exact slot exists. Unlisted pairs cost 1.",
+        "RW|RM": 0.4,
+        "LW|LM": 0.4,
+        "CAM|CM": 0.5,
+        "CDM|CM": 0.5,
+        "RWB|RB": 0.3,
+        "LWB|LB": 0.3,
+        "RM|RWB": 0.7,
+        "LM|LWB": 0.7,
+        "CAM|ST": 0.8,
+        "RW|ST": 0.8,
+        "LW|ST": 0.8,
+        "CDM|CB": 0.8
       }
     }
   }

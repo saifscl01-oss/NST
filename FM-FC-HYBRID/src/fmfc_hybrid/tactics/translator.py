@@ -60,10 +60,11 @@ class TacticalTranslation:
     profile: str
     formation: str
     formation_fidelity: Fidelity
-    team_settings: dict[str, Any]
+    team_settings: dict[str, Any]                   # game units (integers converted to the game's range)
     player_instructions: dict[int, dict[str, Any]]  # lineup slot -> instruction -> value
     elements: tuple[TranslatedElement, ...]
     warnings: tuple[str, ...] = ()
+    team_settings_bridge_scale: dict[str, Any] = field(default_factory=dict)  # integers on the 1..10 scale
 
     def summary(self) -> dict[str, int]:
         counts = Counter(e.fidelity.value for e in self.elements)
@@ -140,19 +141,38 @@ class TacticalTranslator:
         return TranslatedElement(kind, source, fidelity, applied, tuple(dropped), rule.get("rationale", ""))
 
     # -- formation -----------------------------------------------------
-    def nearest_formation(self, fm_positions: list[str]) -> tuple[str, Fidelity, int]:
-        wanted = Counter(self.position_map.get(p, p) for p in fm_positions)
-        best: tuple[int, str] | None = None
+    def _neighbour_cost(self, a: str, b: str) -> float:
+        table = self.profile.get("position_neighbours", {})
+        return float(table.get(f"{a}|{b}", table.get(f"{b}|{a}", 1.0)))
+
+    def nearest_formation(self, fm_positions: list[str]) -> tuple[str, Fidelity, float]:
+        """Closest FIFA formation: exact slot matches first, then cheapest neighbouring slots."""
+        wanted = [self.position_map.get(p, p) for p in fm_positions]
+        best: tuple[float, str] | None = None
         for name, slots in sorted(self.profile.get("formations", {}).items()):
-            have = Counter(slots)
-            distance = sum((wanted - have).values())
-            if best is None or distance < best[0]:
-                best = (distance, name)
+            remaining_have = list(slots)
+            unmatched = []
+            for pos in wanted:
+                if pos in remaining_have:
+                    remaining_have.remove(pos)
+                else:
+                    unmatched.append(pos)
+            cost = 0.0
+            for pos in unmatched:
+                if not remaining_have:
+                    cost += 1.0
+                    continue
+                choice = min(remaining_have, key=lambda h: (self._neighbour_cost(pos, h), h))
+                cost += self._neighbour_cost(pos, choice)
+                remaining_have.remove(choice)
+            cost += abs(len(slots) - len(wanted))  # incomplete or oversized plans
+            if best is None or cost < best[0]:
+                best = (round(cost, 3), name)
         if best is None:
             raise MappingError("capability profile defines no formations")
-        distance, name = best
-        fidelity = Fidelity.DIRECT if distance == 0 else Fidelity.STRONG if distance == 1 else Fidelity.PARTIAL
-        return name, fidelity, distance
+        cost, name = best
+        fidelity = Fidelity.DIRECT if cost == 0 else Fidelity.STRONG if cost <= 1.0 else Fidelity.PARTIAL
+        return name, fidelity, cost
 
     # -- main entry ----------------------------------------------------
     def translate(self, plan: TacticalPlan) -> TacticalTranslation:
@@ -165,7 +185,7 @@ class TacticalTranslator:
         formation, f_fid, distance = self.nearest_formation([r.position for r in roles_sorted])
         elements.append(TranslatedElement(
             "formation", plan.formation, f_fid, {"formation": formation}, (),
-            f"nearest FIFA formation by position slots ({distance} slot(s) differ)"))
+            f"nearest FIFA formation by position slots (mismatch cost {distance})"))
 
         elements.append(self._apply_rule("mentality", plan.mentality,
                                          self.rules.get("mentality", {}).get(plan.mentality), team, warnings))
@@ -187,6 +207,18 @@ class TacticalTranslator:
                                                   "individual instruction rules not yet defined"))
             if target:
                 per_player[ra.slot] = target
-        team["formation"] = formation
-        return TacticalTranslation(self.profile_name, formation, f_fid, team, per_player, tuple(elements),
-                                   tuple(warnings))
+        bridge_scale = dict(team, formation=formation)
+        game = {name: self._to_game(self._knob_spec(f"team.{name}"), value) for name, value in team.items()}
+        game["formation"] = formation
+        per_player_game = {slot: {k: self._to_game(self._knob_spec(f"pi.{k}"), v) for k, v in pi.items()}
+                           for slot, pi in per_player.items()}
+        return TacticalTranslation(self.profile_name, formation, f_fid, game, per_player_game, tuple(elements),
+                                   tuple(warnings), bridge_scale)
+
+    @staticmethod
+    def _to_game(spec: Optional[dict[str, Any]], value: Any) -> Any:
+        """Linear map from the bridge scale (spec min..max) to the game range (game_min..game_max)."""
+        if not spec or spec.get("type") != "int" or "game_min" not in spec:
+            return value
+        lo, hi, gmin, gmax = spec["min"], spec["max"], spec["game_min"], spec["game_max"]
+        return round(gmin + (value - lo) * (gmax - gmin) / (hi - lo))

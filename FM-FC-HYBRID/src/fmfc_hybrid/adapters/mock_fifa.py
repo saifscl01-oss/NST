@@ -131,29 +131,31 @@ class MockFifa:
         home_share = strength[Side.HOME] / (strength[Side.HOME] + strength[Side.AWAY])
 
         # Build a sorted timeline of happenings, then play it forward with state checks.
-        timeline: list[tuple[Period, int, str, Side]] = []
+        timeline: list[tuple[Period, int, str, Side, int]] = []
         for period, lo, hi in ((Period.FIRST_HALF, 1, 45), (Period.SECOND_HALF, 46, 90)):
             for _ in range(rng.randint(0, 3)):
                 timeline.append((period, rng.randint(lo, hi), "goal",
-                                 Side.HOME if rng.random() < home_share + 0.05 else Side.AWAY))
+                                 Side.HOME if rng.random() < home_share + 0.05 else Side.AWAY, rng.randint(0, 59)))
             for _ in range(rng.randint(0, 2)):
-                timeline.append((period, rng.randint(lo, hi), "yellow", rng.choice([Side.HOME, Side.AWAY])))
+                timeline.append((period, rng.randint(lo, hi), "yellow", rng.choice([Side.HOME, Side.AWAY]),
+                                 rng.randint(0, 59)))
         for side in (Side.HOME, Side.AWAY):
             for minute in sorted(rng.sample(range(58, 86), 3)):
-                timeline.append((Period.SECOND_HALF, minute, "sub", side))
+                timeline.append((Period.SECOND_HALF, minute, "sub", side, rng.randint(0, 59)))
         if rng.random() < 0.15:
-            timeline.append((Period.SECOND_HALF, rng.randint(50, 88), "injury", rng.choice([Side.HOME, Side.AWAY])))
-        timeline.sort(key=lambda t: (t[0].order, t[1]))
+            timeline.append((Period.SECOND_HALF, rng.randint(50, 88), "injury", rng.choice([Side.HOME, Side.AWAY]),
+                             rng.randint(0, 59)))
+        timeline.sort(key=lambda t: (t[0].order, t[1], t[4]))
 
         emit(MatchClock(Period.FIRST_HALF, 0), EventType.PERIOD_START)
         stats: dict[str, dict[str, float]] = {}
         half_end_emitted = False
-        for period, minute, kind, side in timeline:
+        for period, minute, kind, side, second in timeline:
             if period is Period.SECOND_HALF and not half_end_emitted:
                 emit(MatchClock(Period.FIRST_HALF, 45, rng.randint(1, 3)), EventType.PERIOD_END)
                 emit(MatchClock(Period.SECOND_HALF, 45), EventType.PERIOD_START)
                 half_end_emitted = True
-            clock = MatchClock(period, minute, 0, rng.randint(0, 59))
+            clock = MatchClock(period, minute, 0, second)
             outfield = [p for p in on_pitch[side] if p != gk[side]]
             if kind == "goal" and outfield:
                 scorer = rng.choice(outfield)

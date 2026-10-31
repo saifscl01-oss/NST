@@ -1,0 +1,22 @@
+{
+  "_comment": "File-presence signatures only. Each rule lists files/dirs (relative to an install root) whose presence suggests a game/layout. Classifications are INFERRED from layout and must be confirmed with REA (inspect-desktop-application) and version info.",
+  "games": [
+    {"id": "fm26", "label": "Football Manager 26", "require_any": ["fm.exe"], "require_all_extra": ["game_plugin.dll"], "notes": "FM26 layout per docs/FM_RESEARCH.md: Unity shell + native game_plugin.dll"},
+    {"id": "fm_native", "label": "Football Manager (native layout, e.g. FM24)", "require_any": ["fm.exe"], "exclude": ["game_plugin.dll", "GameAssembly.dll"]},
+    {"id": "fifa22", "label": "FIFA 22", "require_any": ["FIFA22.exe", "FIFA22_Trial.exe"]},
+    {"id": "fifa21", "label": "FIFA 21", "require_any": ["FIFA21.exe"]},
+    {"id": "fifa20", "label": "FIFA 20", "require_any": ["FIFA20.exe"]},
+    {"id": "fifa19", "label": "FIFA 19", "require_any": ["FIFA19.exe"]},
+    {"id": "fifa18", "label": "FIFA 18", "require_any": ["FIFA18.exe"]},
+    {"id": "fifa17", "label": "FIFA 17", "require_any": ["FIFA17.exe"]},
+    {"id": "fifa16", "label": "FIFA 16", "require_any": ["FIFA16.exe"]},
+    {"id": "fifa15", "label": "FIFA 15", "require_any": ["FIFA15.exe"]}
+  ],
+  "layouts": [
+    {"id": "unity_il2cpp", "label": "Unity IL2CPP", "require_all": ["GameAssembly.dll", "UnityPlayer.dll"], "glob_any": ["*_Data/il2cpp_data/Metadata/global-metadata.dat"]},
+    {"id": "unity_mono", "label": "Unity Mono", "require_all": ["UnityPlayer.dll"], "glob_any": ["*_Data/Managed/Assembly-CSharp.dll"]},
+    {"id": "frostbite_like", "label": "Frostbite-style data layout", "glob_any": ["Data/layout.toc", "Data/initfs_Win32", "Data/initfs_win32"]}
+  ],
+  "key_binaries": ["fm.exe", "game_plugin.dll", "GameAssembly.dll", "UnityPlayer.dll", "FIFA22.exe", "FIFA21.exe", "FIFA20.exe", "FIFA19.exe", "FIFA18.exe", "FIFA17.exe", "FIFA16.exe", "FIFA15.exe"],
+  "key_data_globs": ["*_Data/il2cpp_data/Metadata/global-metadata.dat"]
+}

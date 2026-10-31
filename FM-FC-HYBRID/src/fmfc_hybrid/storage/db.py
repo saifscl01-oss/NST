@@ -281,6 +281,12 @@ class Database:
         with self._lock:
             self._conn.close()
 
+    def __enter__(self) -> "Database":
+        return self
+
+    def __exit__(self, *exc: object) -> None:
+        self.close()
+
 
 def _split_sql(script: str) -> list[str]:
     """Split a schema script into statements (trigger bodies contain ';')."""

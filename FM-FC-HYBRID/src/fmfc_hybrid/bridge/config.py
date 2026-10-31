@@ -14,7 +14,7 @@ DEFAULT_CONFIG_PATH = Path(__file__).resolve().parents[3] / "data" / "configurat
 
 @dataclass(frozen=True)
 class BridgeConfig:
-    fifa_capability_profile: str = "fifa-custom-tactics-v1-provisional"
+    fifa_capability_profile: str = "fifa22-provisional"
     fifa_id_range_start: int = 900000
     fifa_id_range_end: int = 949999
     control_mode: ControlMode = ControlMode.USER_CONTROLS_MANAGED_SIDE
