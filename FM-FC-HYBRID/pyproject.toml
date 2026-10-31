@@ -1,0 +1,17 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "fmfc-hybrid"
+version = "0.1.0"
+description = "FM-FC Hybrid bridge: Football Manager as the brain, FIFA as the match engine."
+requires-python = ">=3.10"
+dependencies = []  # Deliberately stdlib-only so it runs on a bare Windows Python install.
+
+[project.scripts]
+fmfc-hybrid = "fmfc_hybrid.cli:main"
+fmfc-research = "fmfc_research.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["src", "tools/windows_research"]

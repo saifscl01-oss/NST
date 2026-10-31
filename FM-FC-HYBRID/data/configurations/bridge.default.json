@@ -1,0 +1,12 @@
+{
+  "_comment": "Default bridge configuration. fifa_id_range_* is a PLACEHOLDER: the safe id range for bridge-created players must be verified against the chosen FIFA version's database before any real use (docs/PLAYER_MAPPING.md).",
+  "fifa_capability_profile": "fifa-custom-tactics-v1-provisional",
+  "fifa_id_range_start": 900000,
+  "fifa_id_range_end": 949999,
+  "control_mode": "user_controls_managed_side",
+  "fifa_half_length_minutes": 6,
+  "require_simulation_suppression": true,
+  "max_automatic_retries": 2,
+  "rating_source_min": 0.0,
+  "rating_source_max": 10.0
+}

@@ -1,0 +1,341 @@
+{
+  "$defs": {
+    "EventType": {
+      "enum": [
+        "period_start",
+        "period_end",
+        "goal",
+        "own_goal",
+        "penalty_missed",
+        "substitution",
+        "yellow_card",
+        "second_yellow",
+        "red_card",
+        "injury",
+        "shootout_kick",
+        "full_time"
+      ]
+    },
+    "FmImportPackage": {
+      "additionalProperties": false,
+      "properties": {
+        "appearances": {
+          "items": {
+            "$ref": "#/$defs/PlayerAppearance"
+          },
+          "type": "array"
+        },
+        "away_goals": {
+          "type": "integer"
+        },
+        "career_id": {
+          "type": "string"
+        },
+        "events": {
+          "items": {
+            "$ref": "#/$defs/MatchEvent"
+          },
+          "type": "array"
+        },
+        "fixture_id": {
+          "type": "string"
+        },
+        "fm_fixture_ref": {
+          "type": "string"
+        },
+        "home_goals": {
+          "type": "integer"
+        },
+        "idempotency_key": {
+          "type": "string"
+        },
+        "ledger_hash": {
+          "type": "string"
+        },
+        "shootout_away": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "shootout_home": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "team_stats": {
+          "items": {
+            "$ref": "#/$defs/TeamMatchStats"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "idempotency_key",
+        "career_id",
+        "fixture_id",
+        "fm_fixture_ref",
+        "home_goals",
+        "away_goals",
+        "events",
+        "appearances",
+        "team_stats",
+        "ledger_hash"
+      ],
+      "type": "object"
+    },
+    "MatchClock": {
+      "additionalProperties": false,
+      "properties": {
+        "added_minute": {
+          "type": "integer"
+        },
+        "minute": {
+          "type": "integer"
+        },
+        "period": {
+          "$ref": "#/$defs/Period"
+        },
+        "second": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "period",
+        "minute"
+      ],
+      "type": "object"
+    },
+    "MatchEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "clock": {
+          "$ref": "#/$defs/MatchClock"
+        },
+        "detail": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "type": "object"
+        },
+        "match_id": {
+          "type": "string"
+        },
+        "player_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "secondary_player_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sequence": {
+          "type": "integer"
+        },
+        "side": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Side"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_event_id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/EventType"
+        }
+      },
+      "required": [
+        "match_id",
+        "source_event_id",
+        "sequence",
+        "clock",
+        "type"
+      ],
+      "type": "object"
+    },
+    "Period": {
+      "enum": [
+        "1H",
+        "2H",
+        "ET1",
+        "ET2",
+        "PSO"
+      ]
+    },
+    "PlayerAppearance": {
+      "additionalProperties": false,
+      "properties": {
+        "assists": {
+          "type": "integer"
+        },
+        "fm_player_id": {
+          "type": "integer"
+        },
+        "goals": {
+          "type": "integer"
+        },
+        "hybrid_player_id": {
+          "type": "string"
+        },
+        "injured": {
+          "type": "boolean"
+        },
+        "minutes_played": {
+          "type": "integer"
+        },
+        "own_goals": {
+          "type": "integer"
+        },
+        "rating": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "red_card": {
+          "type": "boolean"
+        },
+        "side": {
+          "$ref": "#/$defs/Side"
+        },
+        "started": {
+          "type": "boolean"
+        },
+        "yellow_cards": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "hybrid_player_id",
+        "fm_player_id",
+        "side",
+        "started",
+        "minutes_played"
+      ],
+      "type": "object"
+    },
+    "Side": {
+      "enum": [
+        "home",
+        "away"
+      ]
+    },
+    "TeamMatchStats": {
+      "additionalProperties": false,
+      "properties": {
+        "corners": {
+          "type": "integer"
+        },
+        "extra": {
+          "additionalProperties": {
+            "type": "number"
+          },
+          "type": "object"
+        },
+        "fouls": {
+          "type": "integer"
+        },
+        "goals": {
+          "type": "integer"
+        },
+        "offsides": {
+          "type": "integer"
+        },
+        "passes_attempted": {
+          "type": "integer"
+        },
+        "passes_completed": {
+          "type": "integer"
+        },
+        "possession_pct": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "shots": {
+          "type": "integer"
+        },
+        "shots_on_target": {
+          "type": "integer"
+        },
+        "side": {
+          "$ref": "#/$defs/Side"
+        }
+      },
+      "required": [
+        "side",
+        "goals"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "fmfc-hybrid/fm_import_package/1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "contract": {
+      "const": "fm_import_package"
+    },
+    "payload": {
+      "$ref": "#/$defs/FmImportPackage"
+    },
+    "schema_version": {
+      "pattern": "^1\\.[0-9]+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "contract",
+    "schema_version",
+    "payload"
+  ],
+  "title": "FM-FC Hybrid contract: fm_import_package v1.0",
+  "type": "object"
+}

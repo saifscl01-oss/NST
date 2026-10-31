@@ -1,0 +1,228 @@
+{
+  "$defs": {
+    "Appearance": {
+      "additionalProperties": false,
+      "properties": {
+        "extra": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "height_cm": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "left_foot": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "preferred_foot": {
+          "type": "string"
+        },
+        "right_foot": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "weight_kg": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "AttributeSnapshot": {
+      "additionalProperties": false,
+      "properties": {
+        "current_ability": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "goalkeeping": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "hidden": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "mental": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "physical": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "potential_ability": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "technical": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "PlayerOrigin": {
+      "enum": [
+        "fm_database",
+        "regen",
+        "youth_intake",
+        "fm_editor"
+      ]
+    },
+    "PlayerProfile": {
+      "additionalProperties": false,
+      "properties": {
+        "appearance": {
+          "$ref": "#/$defs/Appearance"
+        },
+        "attributes": {
+          "$ref": "#/$defs/AttributeSnapshot"
+        },
+        "club_fm_id": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "common_name": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "date_of_birth": {
+          "type": "string"
+        },
+        "first_name": {
+          "type": "string"
+        },
+        "fm_player_id": {
+          "type": "integer"
+        },
+        "last_name": {
+          "type": "string"
+        },
+        "nationality": {
+          "type": "string"
+        },
+        "origin": {
+          "$ref": "#/$defs/PlayerOrigin"
+        },
+        "positions": {
+          "additionalProperties": {
+            "type": "integer"
+          },
+          "type": "object"
+        },
+        "shirt_number": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "traits": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "fm_player_id",
+        "first_name",
+        "last_name",
+        "date_of_birth",
+        "nationality",
+        "origin",
+        "positions",
+        "attributes"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "fmfc-hybrid/player_profile/1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "contract": {
+      "const": "player_profile"
+    },
+    "payload": {
+      "$ref": "#/$defs/PlayerProfile"
+    },
+    "schema_version": {
+      "pattern": "^1\\.[0-9]+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "contract",
+    "schema_version",
+    "payload"
+  ],
+  "title": "FM-FC Hybrid contract: player_profile v1.0",
+  "type": "object"
+}

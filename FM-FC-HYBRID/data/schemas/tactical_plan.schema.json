@@ -1,0 +1,120 @@
+{
+  "$defs": {
+    "Duty": {
+      "enum": [
+        "defend",
+        "support",
+        "attack",
+        "stopper",
+        "cover",
+        "automatic"
+      ]
+    },
+    "RoleAssignment": {
+      "additionalProperties": false,
+      "properties": {
+        "duty": {
+          "$ref": "#/$defs/Duty"
+        },
+        "individual_instructions": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "position": {
+          "type": "string"
+        },
+        "role": {
+          "type": "string"
+        },
+        "slot": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "slot",
+        "position",
+        "role",
+        "duty"
+      ],
+      "type": "object"
+    },
+    "TacticalPlan": {
+      "additionalProperties": false,
+      "properties": {
+        "formation": {
+          "type": "string"
+        },
+        "in_possession": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "in_transition": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "mentality": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "out_of_possession": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "roles": {
+          "items": {
+            "$ref": "#/$defs/RoleAssignment"
+          },
+          "type": "array"
+        },
+        "source_version": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "formation",
+        "mentality",
+        "roles"
+      ],
+      "type": "object"
+    }
+  },
+  "$id": "fmfc-hybrid/tactical_plan/1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "contract": {
+      "const": "tactical_plan"
+    },
+    "payload": {
+      "$ref": "#/$defs/TacticalPlan"
+    },
+    "schema_version": {
+      "pattern": "^1\\.[0-9]+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "contract",
+    "schema_version",
+    "payload"
+  ],
+  "title": "FM-FC Hybrid contract: tactical_plan v1.0",
+  "type": "object"
+}

@@ -1,0 +1,19 @@
+__pycache__/
+*.pyc
+*.sqlite
+*.sqlite-wal
+*.sqlite-shm
+*.db
+/out/
+/research_output/
+/.venv/
+# Never commit proprietary game material or saves.
+*.exe
+*.dll
+*.pdb
+*.fm
+*.pkm
+*.dat
+*.cas
+*.cat
+*.toc

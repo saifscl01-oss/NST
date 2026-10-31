@@ -1,0 +1,155 @@
+{
+  "$defs": {
+    "EventType": {
+      "enum": [
+        "period_start",
+        "period_end",
+        "goal",
+        "own_goal",
+        "penalty_missed",
+        "substitution",
+        "yellow_card",
+        "second_yellow",
+        "red_card",
+        "injury",
+        "shootout_kick",
+        "full_time"
+      ]
+    },
+    "MatchClock": {
+      "additionalProperties": false,
+      "properties": {
+        "added_minute": {
+          "type": "integer"
+        },
+        "minute": {
+          "type": "integer"
+        },
+        "period": {
+          "$ref": "#/$defs/Period"
+        },
+        "second": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "period",
+        "minute"
+      ],
+      "type": "object"
+    },
+    "MatchEvent": {
+      "additionalProperties": false,
+      "properties": {
+        "clock": {
+          "$ref": "#/$defs/MatchClock"
+        },
+        "detail": {
+          "additionalProperties": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "type": "number"
+              },
+              {
+                "type": "boolean"
+              }
+            ]
+          },
+          "type": "object"
+        },
+        "match_id": {
+          "type": "string"
+        },
+        "player_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "secondary_player_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sequence": {
+          "type": "integer"
+        },
+        "side": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Side"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_event_id": {
+          "type": "string"
+        },
+        "type": {
+          "$ref": "#/$defs/EventType"
+        }
+      },
+      "required": [
+        "match_id",
+        "source_event_id",
+        "sequence",
+        "clock",
+        "type"
+      ],
+      "type": "object"
+    },
+    "Period": {
+      "enum": [
+        "1H",
+        "2H",
+        "ET1",
+        "ET2",
+        "PSO"
+      ]
+    },
+    "Side": {
+      "enum": [
+        "home",
+        "away"
+      ]
+    }
+  },
+  "$id": "fmfc-hybrid/match_event/1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "contract": {
+      "const": "match_event"
+    },
+    "payload": {
+      "$ref": "#/$defs/MatchEvent"
+    },
+    "schema_version": {
+      "pattern": "^1\\.[0-9]+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "contract",
+    "schema_version",
+    "payload"
+  ],
+  "title": "FM-FC Hybrid contract: match_event v1.0",
+  "type": "object"
+}

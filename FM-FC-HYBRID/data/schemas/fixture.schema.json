@@ -1,0 +1,224 @@
+{
+  "$defs": {
+    "ClubRef": {
+      "additionalProperties": false,
+      "properties": {
+        "fm_club_id": {
+          "type": "integer"
+        },
+        "hybrid_club_id": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "hybrid_club_id",
+        "fm_club_id",
+        "name"
+      ],
+      "type": "object"
+    },
+    "CompetitionRef": {
+      "additionalProperties": false,
+      "properties": {
+        "fm_competition_id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        },
+        "stage": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "fm_competition_id",
+        "name"
+      ],
+      "type": "object"
+    },
+    "Fixture": {
+      "additionalProperties": false,
+      "properties": {
+        "away": {
+          "$ref": "#/$defs/MatchdaySquad"
+        },
+        "career_id": {
+          "type": "string"
+        },
+        "competition": {
+          "$ref": "#/$defs/CompetitionRef"
+        },
+        "fixture_id": {
+          "type": "string"
+        },
+        "fm_fixture_ref": {
+          "type": "string"
+        },
+        "home": {
+          "$ref": "#/$defs/MatchdaySquad"
+        },
+        "kickoff": {
+          "type": "string"
+        },
+        "managed_side": {
+          "$ref": "#/$defs/Side"
+        },
+        "rules": {
+          "$ref": "#/$defs/MatchRules"
+        },
+        "venue": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "fixture_id",
+        "career_id",
+        "fm_fixture_ref",
+        "competition",
+        "kickoff",
+        "home",
+        "away",
+        "managed_side"
+      ],
+      "type": "object"
+    },
+    "LineupSlot": {
+      "additionalProperties": false,
+      "properties": {
+        "hybrid_player_id": {
+          "type": "string"
+        },
+        "position": {
+          "type": "string"
+        },
+        "slot": {
+          "type": "integer"
+        }
+      },
+      "required": [
+        "slot",
+        "hybrid_player_id",
+        "position"
+      ],
+      "type": "object"
+    },
+    "MatchRules": {
+      "additionalProperties": false,
+      "properties": {
+        "bench_size": {
+          "type": "integer"
+        },
+        "extra_time": {
+          "type": "boolean"
+        },
+        "half_length_minutes": {
+          "type": "integer"
+        },
+        "penalty_shootout": {
+          "type": "boolean"
+        },
+        "substitution_windows": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "substitutions_allowed": {
+          "type": "integer"
+        }
+      },
+      "required": [],
+      "type": "object"
+    },
+    "MatchdaySquad": {
+      "additionalProperties": false,
+      "properties": {
+        "bench": {
+          "items": {
+            "type": "string"
+          },
+          "type": "array"
+        },
+        "captain_id": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "club": {
+          "$ref": "#/$defs/ClubRef"
+        },
+        "set_piece_takers": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "type": "object"
+        },
+        "starters": {
+          "items": {
+            "$ref": "#/$defs/LineupSlot"
+          },
+          "type": "array"
+        }
+      },
+      "required": [
+        "club",
+        "starters",
+        "bench"
+      ],
+      "type": "object"
+    },
+    "Side": {
+      "enum": [
+        "home",
+        "away"
+      ]
+    }
+  },
+  "$id": "fmfc-hybrid/fixture/1.0",
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "properties": {
+    "contract": {
+      "const": "fixture"
+    },
+    "payload": {
+      "$ref": "#/$defs/Fixture"
+    },
+    "schema_version": {
+      "pattern": "^1\\.[0-9]+$",
+      "type": "string"
+    }
+  },
+  "required": [
+    "contract",
+    "schema_version",
+    "payload"
+  ],
+  "title": "FM-FC Hybrid contract: fixture v1.0",
+  "type": "object"
+}
