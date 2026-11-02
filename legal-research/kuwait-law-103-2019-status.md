@@ -81,7 +81,7 @@ All of these are ministerial decisions made **under** the law. None of them amen
 - Law text and explanatory memorandum: https://almirjah.wordpress.com/2021/06/21/103/
 - Parliamentary record (Raqib50): https://www.raqib50.com/parliaments/8/legislations/177
 - Executive Regulations announcement (Argaam, 2 Feb 2020): https://www.argaam.com/ar/article/articledetail/id/1345544
-- Compilation of the law and its implementing decisions (lawskw.com): https://lawskw.com/section/قانون-رقم-103-لسنة-2019-في-شان-مزاولة-مهنة-مراقبة-الحسابات
+- Compilation of the law and its implementing decisions (lawskw.com): https://lawskw.com/section/%D9%82%D8%A7%D9%86%D9%88%D9%86-%D8%B1%D9%82%D9%85-103-%D9%84%D8%B3%D9%86%D8%A9-2019-%D9%81%D9%8A-%D8%B4%D8%A7%D9%86-%D9%85%D8%B2%D8%A7%D9%88%D9%84%D8%A9-%D9%85%D9%87%D9%86%D8%A9-%D9%85%D8%B1%D8%A7%D9%82%D8%A8%D8%A9-%D8%A7%D9%84%D8%AD%D8%B3%D8%A7%D8%A8%D8%A7%D8%AA%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-13-%D9%84%D8%B3%D9%86%D8%A9-2020%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-118-%D9%84%D8%B3%D9%86%D8%A9-2021%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-384-%D9%84%D8%B3%D9%86%D8%A9-2019%D9%82%D8%B1%D8%A7%D8%B1-%D9%88%D8%B2%D8%A7%D8%B1%D9%8A-%D8%B1%D9%82%D9%85-180-%D9%84%D8%B3%D9%86%D8%A9-2020%D9%85%D9%82%D8%B1%D8%A7%D8%B1-%D8%B1%D9%82%D9%85-144-%D9%84%D8%B3%D9%86%D8%A9-2023
 - Ministerial Decision 81/2023 citing Law 103/2019 (Lexis Middle East): https://www.lexismiddleeast.com/law/Kuwait/MinisterialDecision_81_2023/en
 - Companies Law reform draft (LexisNexis, 2 Oct 2026): https://www.lexisnexis.com/blogs/ae-legal/b/insights/posts/kuwait-cabinet-approves-major-companies-law-reforms
 - Decree-Law 67/2026 (GLA & Company): https://www.glaco.com/blog/decree-law-no-67-of-2026-and-the-corporatization-of-kuwaits-oil-sector/
